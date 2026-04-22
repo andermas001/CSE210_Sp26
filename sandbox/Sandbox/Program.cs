@@ -4,6 +4,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("I like football");
+        // whats up.
+        //wow
+         
+        Console.WriteLine("Hello dude");
     }
 }
