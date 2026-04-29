@@ -10,6 +10,7 @@ class Program
         List<int> numbers = new List<int>();
         int total = 0;
         int largest = 0;
+        int smallest = 100000000;
         do
         {
            Console.Write("please enter a number: ");
@@ -23,6 +24,11 @@ class Program
                 largest = number;
             }
 
+           if (number > 0 && number < smallest)
+            {
+                smallest = number;
+            }
+
         }
         while (number != 0);
         int entries = numbers.Count;
@@ -33,6 +39,7 @@ class Program
         Console.WriteLine(i);
         }
         Console.WriteLine($"The Largest number is {largest}");
+        Console.WriteLine($"The smallest positive number is {smallest}");
         Console.WriteLine($"The list adds up to {total}");
         int average = total / entries;
         Console.WriteLine($"The average is {average}");
