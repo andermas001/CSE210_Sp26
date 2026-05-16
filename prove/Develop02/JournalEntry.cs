@@ -41,4 +41,15 @@ class JournalEntry
         return systemString;
     }
 
+    public void LoadFromFileString(string fileString)
+    {
+        string[] parts = fileString.Split("#");
+        if (parts.Length == 3)
+        {
+            _date = parts[0];
+            _prompt = parts[1];
+            _response = parts[2];
+        }
+    }
+
 }
