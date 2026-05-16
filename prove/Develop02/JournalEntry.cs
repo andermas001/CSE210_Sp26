@@ -12,7 +12,8 @@ class JournalEntry
         "How are you feeling today",
         "Who did you talk with today",
         "What did you like about today",
-        "Did you eat any good food today"
+        "Did you eat any good food today",
+        "What did you learn today?"
     };
 
      public string GetRandomPrompt()
