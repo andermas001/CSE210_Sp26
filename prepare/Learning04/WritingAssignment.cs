@@ -6,7 +6,6 @@ class WritingAssignment : Assignment
     string title) : base (name, topic)
     {
         _title = title;
-
     }
 
     public string GetWritingInformation()

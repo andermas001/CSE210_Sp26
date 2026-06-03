@@ -12,11 +12,9 @@
     Console.WriteLine(myCircle.GetCircumfrance());
 
     Cylander myCylander = new Cylander();
-    myCylander _circle = new Circle();
-    myCylander _radius; 
+    myCylander._radius = 20; 
+    myCylander._height =100;
+    Console.WriteLine(myCylander.GetArea());
     
-
-
-     
     }
 }

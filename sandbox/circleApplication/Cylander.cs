@@ -1,8 +1,6 @@
 class Cylander
 {
-    public Circle _circle;
-
-    public Circle _radius;
+    public double _radius;
 
     public double _height;
 

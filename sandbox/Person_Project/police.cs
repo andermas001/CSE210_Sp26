@@ -13,6 +13,6 @@ class Police : Person
 
     public string getPoliceInformation()
     {
-        return ($"weapon: {_weapon}, Badge: {_badgeNumber}, Name: {_fname} {_lName}, age: {age}, weight: {_weight}");
+        return ($"weapon: {_weapon}, Badge: {_badgeNumber},{GetPersonInformation()}");
     }
 }
