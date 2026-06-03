@@ -11,6 +11,6 @@ class WritingAssignment : Assignment
 
     public string GetWritingInformation()
     {
-        return ($"{_title}");
+        return $"{_title}";
     }
 }

@@ -12,6 +12,6 @@ class MathAssignment : Assignment
 
     public string GetHomeworkList()
     {
-        return($"Section: {_textbookSection} problems: {_problems}");
+        return$"Section: {_textbookSection} problems: {_problems}";
     }
 }
