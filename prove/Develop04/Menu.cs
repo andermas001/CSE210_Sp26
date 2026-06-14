@@ -6,7 +6,7 @@ public class Menu
     {
         Console.WriteLine("Menu Options");
         Console.WriteLine("1. Start Breathing Activity");
-        Console.WriteLine("2. Start reflecting Activity");
+        Console.WriteLine("2. Start Reflecting Activity");
         Console.WriteLine("3. Start listing Activity");
         Console.WriteLine("4. Quit");
         Console.Write("Please select an option: ");

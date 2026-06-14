@@ -1,8 +1,6 @@
 public class Listing : BaseActivity
 {
-
     public int timer;
-
     private List<string> _prompts = new List<string>
     {
         "Who are people that you appreciate?",
@@ -11,7 +9,6 @@ public class Listing : BaseActivity
         "When have you felt the Holy Ghost this month?",
         "Who are some of your personal heroes?",
     };
-
     private List<string> _responses = new List<string>
     {};
 

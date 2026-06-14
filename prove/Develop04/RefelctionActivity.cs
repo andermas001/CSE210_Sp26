@@ -24,7 +24,7 @@ public class Reflection : BaseActivity
     private int randompromptIndex;
 
     Random rand = new Random();
-    public Reflection(string description) : base ("breathing", description)
+    public Reflection(string description) : base ("Reflecting", description)
     {
         randomQuestionIndex = rand.Next(_questions.Count);
         randompromptIndex = rand.Next(_prompts.Count);
