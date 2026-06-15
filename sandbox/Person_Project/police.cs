@@ -11,7 +11,7 @@ class Police : Person
         _badgeNumber = badgeNumber;
     }
 
-    public string getPoliceInformation()
+    public override string GetPersonInformation()
     {
         return ($"weapon: {_weapon}, Badge: {_badgeNumber},{GetPersonInformation()}");
     }

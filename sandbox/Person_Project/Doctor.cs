@@ -11,8 +11,10 @@ class Doctor : Person
         _location = location;
     }
 
-    public string getDoctorInformation()
+    public override string GetPersonInformation()
     {
         return ($"Practice {_practice},Location {_location},{GetPersonInformation()}");
     }
+
+
 }
