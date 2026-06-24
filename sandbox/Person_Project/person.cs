@@ -1,4 +1,4 @@
-class Person
+abstract class Person
 {
     private string _fName;
     private string _lname;
@@ -42,6 +42,9 @@ class Person
         }
 
     }
+
+    public abstract double GetSalary();
+    
 
     
 

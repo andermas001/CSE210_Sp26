@@ -16,5 +16,9 @@ class Doctor : Person
         return ($"Practice {_practice},Location {_location},{GetPersonInformation()}");
     }
 
+    public override double GetSalary()
+    {
+        return 350000;
+    }
 
 }

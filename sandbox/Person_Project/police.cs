@@ -15,4 +15,9 @@ class Police : Person
     {
         return ($"weapon: {_weapon}, Badge: {_badgeNumber},{GetPersonInformation()}");
     }
+
+    public override double GetSalary()
+    {
+        return 100000;
+    }
 }
