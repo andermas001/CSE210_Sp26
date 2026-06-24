@@ -1,4 +1,4 @@
-class BaseGoal
+abstract class BaseGoal
 {
     private string _name;
     private string _description;
@@ -15,23 +15,25 @@ class BaseGoal
         _goalType = "";
     }
 
-    public void Setname()
+    protected void Setname()
     {
         Console.Write("What is the name of the Goal? ");
         _name = Console.ReadLine();
     }
 
-    public void SetDescription()
+    protected void SetDescription()
     {
         Console.Write($"What is the description of the {_name} goal? ");
         _description = Console.ReadLine();
     }
 
-    public void SetNumberOfPoints()
+    protected void SetNumberOfPoints()
     {
         Console.Write($"Enter the points earned for the {_name} goal ");
         _numberOfPoints = Convert.ToInt32(Console.ReadLine());
     }
+
+    // Format and return string can be used to display string
 
     public virtual string GetDisplayString()
     {
@@ -48,11 +50,15 @@ class BaseGoal
     and change the get display string to have the box checked off
     */
 
-    public int MarkComplete()
+    protected int MarkComplete()
     {
         _status = true;
         return _numberOfPoints;
     }
+
+    public abstract void CreateGoal();
+
+    public abstract void RecordEvent();
 
 
 }
