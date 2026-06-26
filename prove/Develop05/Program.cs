@@ -6,19 +6,12 @@ class Program
     {
         Console.WriteLine("Hello Develop05 World!");
 
-        // BaseGoal myGoal = new BaseGoal();
-        // myGoal.Setname();
-        // myGoal.SetDescription();
-        // myGoal.SetNumberOfPoints();
-        // Console.WriteLine(myGoal.GetDisplayString()); 
-        // myGoal.MarkComplete();
-        // Console.WriteLine(myGoal.GetDisplayString()); 
 
         SimpleGoal myGoal = new SimpleGoal();
         myGoal.CreateGoal();
         Console.WriteLine(myGoal.GetDisplayString());
-
-        
+        myGoal.RecordEvent();
+        Console.WriteLine(myGoal.GetDisplayString());
 
     }
 }

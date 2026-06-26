@@ -15,6 +15,15 @@ abstract class BaseGoal
         _goalType = "";
     }
 
+    public BaseGoal(string name, string description, int points, bool status, string goalType)
+    {
+        _name = name;
+        _description = description;
+        _numberOfPoints = points;
+        _status = status;
+        _goalType = goalType;
+    }
+
     protected void Setname()
     {
         Console.Write("What is the name of the Goal? ");
@@ -42,7 +51,7 @@ abstract class BaseGoal
         {
             _statusMarker = 'X';
         }
-        return $"[{_statusMarker}] Name: {_name}, description: {_description}, points earned : {_numberOfPoints}";
+        return $"[{_statusMarker}] Name: {_name}, description: {_description}, points earned when completed : {_numberOfPoints}";
     }
 
     /*
@@ -60,5 +69,37 @@ abstract class BaseGoal
 
     public abstract void RecordEvent();
 
+    public virtual string GetFileSystemString()
+    {
+        return "";
+    }
+
+    public virtual string GetGoalType()
+    {
+        return "";
+    }
+
+    protected bool GetStatus()
+    {
+        return _status;
+    }
+
+
+    protected int GetPoints()
+    {
+        return _numberOfPoints;
+    }
+
+     protected string GetName()
+    {
+        return _name;
+    }
+
+     protected string GetDescription()
+    {
+        return _description;
+    }
+
+    
 
 }
