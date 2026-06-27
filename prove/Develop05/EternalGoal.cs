@@ -7,6 +7,11 @@ class EternalGoal : BaseGoal
         
     }
 
+    public EternalGoal(string name, string description, int points, int completions) : base(name, description, points, false, "EternalGoal")
+    {
+        _numberOfCompletetions = completions;
+    }
+
     public override void CreateGoal()
     {
         Setname();
@@ -14,17 +19,24 @@ class EternalGoal : BaseGoal
         SetNumberOfPoints();
     }
 
-    public override void RecordEvent()
+    public override int RecordEvent()
     {
-        _numberOfCompletetions +=1;
+        _numberOfCompletetions += 1;
+        return GetPoints();
+    }
+
+    public override string GetGoalType()
+    {
+        return "EternalGoal";
+    }
+
+    public override string GetFileSystemString()
+    {
+        return $"{GetGoalType()}|{GetName()}|{GetDescription()}|{GetPoints()}|{_numberOfCompletetions}";
     }
 
     public override string GetDisplayString()
     {
-        /* char _statusMarker = ' ';
-        If goal is never going to be comlete don't need the bars to mark if it is complete
-        */
-
         int points = _numberOfCompletetions * GetPoints();
         return $"Name: {GetName()}, description: {GetDescription()}, points earned: {points}";
     }

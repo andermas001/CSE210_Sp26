@@ -33,6 +33,13 @@ class ComplexGoal : BaseGoal
         
     }
 
+    public ComplexGoal(string name, string description, int points, int completions, int maxCompletions, int completionBonus, bool status) : base(name, description, points, status, "ComplexGoal")
+    {
+        _numberOfCompletetions = completions;
+        _maxCompletions = maxCompletions;
+        _completionBonus = completionBonus;
+    }
+
     public override void CreateGoal()
     {
         Setname();
@@ -44,19 +51,31 @@ class ComplexGoal : BaseGoal
         _completionBonus = Convert.ToInt32(Console.ReadLine());
     }
 
-    public override void RecordEvent()
+    public override int RecordEvent()
     {
-        _numberOfCompletetions +=1;
+        _numberOfCompletetions += 1;
+        int pointsEarned = GetPoints();
         if (_numberOfCompletetions == _maxCompletions)
         {
             MarkComplete();
+            pointsEarned += _completionBonus;
         }
+        return pointsEarned;
+    }
+
+    public override string GetGoalType()
+    {
+        return "ComplexGoal";
+    }
+
+    public override string GetFileSystemString()
+    {
+        return $"{GetGoalType()}|{GetName()}|{GetDescription()}|{GetPoints()}|{_numberOfCompletetions}|{_maxCompletions}|{_completionBonus}|{GetStatus()}";
     }
 
     public override string GetDisplayString()
     {
         char _statusMarker = ' ';
-        // bool _stat = GetStatus();
         if (GetStatus())
         {
             _statusMarker = 'X';

@@ -5,6 +5,10 @@ class SimpleGoal : BaseGoal
         
     }
 
+    public SimpleGoal(string name, string description, int points, bool status) : base(name, description, points, status, "SimpleGoal")
+    {
+    }
+
     public override void CreateGoal()
     {
         Setname();
@@ -12,9 +16,14 @@ class SimpleGoal : BaseGoal
         SetNumberOfPoints();
     }
 
-    public override void RecordEvent()
+    public override int RecordEvent()
     {
-        MarkComplete();
+        return MarkComplete();
+    }
+
+    public override string GetGoalType()
+    {
+        return "SimpleGoal";
     }
 
     public override string GetDisplayString()

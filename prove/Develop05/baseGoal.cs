@@ -67,16 +67,16 @@ abstract class BaseGoal
 
     public abstract void CreateGoal();
 
-    public abstract void RecordEvent();
+    public abstract int RecordEvent();
 
     public virtual string GetFileSystemString()
     {
-        return "";
+        return $"{GetGoalType()}|{GetName()}|{GetDescription()}|{GetPoints()}|{GetStatus()}";
     }
 
     public virtual string GetGoalType()
     {
-        return "";
+        return "BaseGoal";
     }
 
     protected bool GetStatus()
