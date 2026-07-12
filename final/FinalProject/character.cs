@@ -49,26 +49,29 @@ public abstract class  Character
     }
 
     // Code to help calculate the probabilty of missing an attack
-    public virtual void StaminaMultiplier(){
-    // stamina Miss percentage mulitplier
-    Random rand = new Random();
+    public virtual bool MissedAttack(){
+        // stamina Miss percentage mulitplier
 
-    // Calculate current stamina percentage (e.g., 20/100 = 0.2)
-    double staminaPct;
-    staminaPct = _currentStamina / _stamina;
+        Random rand = new Random();
 
-    // Base accuracy is 95%. If stamina drops below 50%, reduce accuracy proportionally
-    double accuracy = 0.95;
-    if (staminaPct < 0.25)
-    {
-        accuracy -= (0.75 - staminaPct); // e.g., at 10% stamina, accuracy drops by 0.4 (down to 55%)
-    }
+        // Calculate current stamina percentage (e.g., 20/100 = 0.2)
+        double staminaPct;
+        staminaPct = _currentStamina / _stamina;
 
-    // Roll a decimal between 0.0 and 1.0
-    if (rand.NextDouble() > accuracy)
-    {
-        Console.WriteLine($"{_name} is exhausted and MISSED the attack!");
-    }
+        // Base accuracy is 95%. If stamina drops below 50%, reduce accuracy proportionally
+        double accuracy = 0.95;
+        if (staminaPct < 0.25)
+        {
+            accuracy = -0.00008 * Math.Pow(staminaPct, 2) + 0.012 * staminaPct + .60;  // e.g., at 10% stamina, accuracy drops by 0.4 (down to 55%)
+        }
+        // Roll a decimal between 0.0 and 1.0
+        if (rand.NextDouble() > accuracy)
+        {
+            Console.WriteLine($"{_name} is exhausted and MISSED the attack!");
+            return true;
+        }
+        else
+        return false;
     }
 
 }

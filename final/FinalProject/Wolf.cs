@@ -1,6 +1,6 @@
 class Wolf : Monster
 {
-     public Wolf(string name, int level) :  base(name, 
+    public Wolf(string name, int level) :  base(name, 
     maxHp: 45 +(level*12), 
     speed: 16 + (level * 4),
     defense: 2 + (level * 0.5) , 

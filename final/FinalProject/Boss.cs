@@ -1,6 +1,6 @@
 class Boss : Monster
 {
-     public Boss(string name, int level) :  base(name, 
+    public Boss(string name, int level) :  base(name, 
     maxHp: 350 +(level*75), 
     speed: 10 + (level * 2),
     defense: 10 + (level * 4) , 
