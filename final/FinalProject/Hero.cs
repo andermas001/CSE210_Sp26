@@ -2,9 +2,11 @@ public abstract class Hero : Character
 {
   private int Xp;
 
-  public Hero(string name, int maxHp, int speed, int defense, int stamina, int strength) : base(name, maxHp, speed, defense, stamina, strength)
+  public Hero(string name, int maxHp, int speed, double defense, int stamina, double strength, int mana) : 
+  base(name, maxHp, speed, defense, stamina, strength, mana)
     {
         Xp = 0;
+        _lvl = 1;
     }
 
   /* Xp required to level up = C * L^2 
@@ -18,10 +20,11 @@ public abstract class Hero : Character
         return Xp;
     }
 
-    public void levelUp()
+    public virtual void LevelUp()
     {
         
     }
+    /*
 
     public override void Attack(int damage)
     {
@@ -33,6 +36,6 @@ public abstract class Hero : Character
         throw new NotImplementedException();
     }
 
-
+*/
 
 }

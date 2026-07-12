@@ -1,19 +1,24 @@
-class Monster : Character
+abstract class  Monster : Character
 {
-    public virtual int XpReward () 
+    protected int _xpReward;
+
+    protected Monster(string name, int maxHp, double speed, double defense, int stamina, double strength, int mana, int level) 
+    : base(name, maxHp, speed, defense, stamina, strength, mana)
     {
-        
-        return 5;
+        _lvl = level;
     }
 
-    public override void TakeTurn(Character Target)
+    public virtual int XpGiven() 
     {
-        throw new NotImplementedException();
+        return _xpReward;
     }
 
-    public override void Attack(int damage)
+    public override void TakeTurn()
     {
-        throw new NotImplementedException();
+    }
+
+    public override void Attack()
+    {
     }
 
 }
