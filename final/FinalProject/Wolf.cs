@@ -12,4 +12,17 @@ class Wolf : Monster
     {
         _xpReward = 25 + (level * 10);
     }
+
+    public override void TakeTurn(List<Character> allies, List<Character> enemies)
+    {
+        // Wolves act like a pack and target the weakest living character (lowest current HP)
+        Character target = enemies.Where(h => h.IsAlive).OrderBy(h => h.AttackPower).FirstOrDefault(); // or track CurrentHp
+        
+        if (target != null)
+        {
+            Console.WriteLine($"\n🐺 {_name} lunges at the weakest target, {target._name}!");
+            double rawDamage = _strength
+            target.TakeDamage(rawDamage);
+        }
+    }
 }

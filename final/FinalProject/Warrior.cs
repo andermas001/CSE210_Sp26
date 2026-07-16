@@ -13,24 +13,54 @@ public class Warrior : Hero
 
     public override void LevelUp()
     {
-        _lvl ++;
-        _maxHealth += 20;
-        _defense += 2;
-        _speed += 1;
-        _strength += 5;
-        _stamina += 5;
+        Lvl ++;
+        MaxHealth += 20;
+        Defense += 2;
+        Speed += 1;
+        Strength += 5;
+        Stamina += 5;
     }
 
-    public override void TakeTurn()
+    public override void TakeTurn(List<Character> allies, List<Character> enemies)
     {
-        /* Example: Strong Attack uses Stamina and scales off Strength
-        Character target = enemies[0]; 
-        int damage = _attackPower + 10; // 15 + 10 = 25 baseline damage at Level 1
-        target.TakeDamage(damage);
-        */
-    }
-    public override void Attack()
-    {
+        {
+        Defending = false; // Reset defense stance at start of turn
+        Console.WriteLine($"\n--- {Name}'s Turn (Warrior) ---");
+        Console.WriteLine($"HP: {Health}/{MaxHealth} | Stamina: {CurrentStamina}/{Stamina}");
+        Console.WriteLine("1. Light Attack (0 Stamina, standard damage)");
+        Console.WriteLine("2. Heavy Bash (25 Stamina, high damage)");
+        Console.WriteLine("3. Defend (0 Stamina, reduces incoming damage next round)");
         
+        Console.Write("Choose an action: ");
+        string choice = Console.ReadLine();
+
+        if (choice == "3")
+        {
+            IsDefending();
+            Console.WriteLine($"{Name} raised their shield!");
+            return;
+        }
+
+        // Target selection helper
+        Character target = ChooseTarget(enemies); // enemies);
+        if (target == null) return;
+
+        // Check stamina rule for missing odds
+        if (choice == "2" && CurrentStamina >= 25)
+        {
+            CurrentStamina -= 25;
+            if (CalculateMiss()) // 25% lower stamina accuracy penalty
+            {
+                target.TakeDamage(AttackPower + 20);
+            }
+        }
+        else // Default to Light Attack
+        {
+            if (CalculateMiss()) 
+            {
+                target.TakeDamage(AttackPower);
+            }
+        }
+    }
     }
 }

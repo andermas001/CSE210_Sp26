@@ -9,22 +9,55 @@ class Tank : Hero
 
     public override void LevelUp()
     {
-        _lvl ++;
-        _maxHealth += 35;
-        _defense += 4;
-        _speed += 1;
-        _strength += 3;
-        _stamina += 8;
+        Lvl ++;
+        MaxHealth += 35;
+        Defense += 4;
+        Speed += 1;
+        Strength += 3;
+        Stamina += 8;
     }
 
-    public override void TakeTurn()
+    public override void TakeTurn(List<Character> allies, List<Character> enemies)
     {
+        {
+        Defending = false; // Reset defense stance at start of turn
+        Console.WriteLine($"\n--- {Name}'s Turn (Tank) ---");
+        Console.WriteLine($"HP: {Health}/{MaxHealth} | Stamina: {CurrentStamina}/{Stamina}");
+        Console.WriteLine("1. Light Attack (0 Stamina, standard damage)");
+        Console.WriteLine("2. Heavy Bash (25 Stamina, high damage)");
+        Console.WriteLine("3. Defend (0 Stamina, reduces incoming damage next round)");
         
-    }
+        Console.Write("Choose an action: ");
+        string choice = Console.ReadLine();
 
-    public override void Attack()
-    {
-      
+        if (choice == "3")
+        {
+            IsDefending();
+            Console.WriteLine($"{Name} raised their shield!");
+            return;
+        }
+
+        // Target selection helper
+        Character target = ChooseTarget(enemies); // enemies);
+        if (target == null) return;
+
+        // Check stamina rule for missing odds
+        if (choice == "2" && CurrentStamina >= 25)
+        {
+            CurrentStamina -= 25;
+            if (CalculateMiss()) // 25% lower stamina accuracy penalty
+            {
+                target.TakeDamage(AttackPower + 20);
+            }
+        }
+        else // Default to Light Attack
+        {
+            if (CalculateMiss()) 
+            {
+                target.TakeDamage(AttackPower);
+            }
+        }
+    }
     }
 
 }
