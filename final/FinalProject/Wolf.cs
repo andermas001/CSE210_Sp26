@@ -20,8 +20,8 @@ class Wolf : Monster
         
         if (target != null)
         {
-            Console.WriteLine($"\n🐺 {_name} lunges at the weakest target, {target._name}!");
-            double rawDamage = _strength
+            Console.WriteLine($"\n🐺 {Name} lunges at the weakest target, {target.Name}!");
+            double rawDamage = Strength;
             target.TakeDamage(rawDamage);
         }
     }

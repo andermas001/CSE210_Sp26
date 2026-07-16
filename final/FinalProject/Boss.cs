@@ -12,17 +12,44 @@ class Boss : Monster
     {
         _xpReward = 200 + (level * 50);
     }
+    private int _turnCycle = 1;
 
     public override void TakeTurn(List<Character> allies, List<Character> enemies)
     {
-        // Golems blindly target whoever has the highest max health (usually the Tank)
-        Character target = enemies.Where(h => h.IsAlive).OrderByDescending(h => h._maxHealth ).FirstOrDefault();
-        
-        if (target != null)
+        Defending = false; // Reset defense stance
+
+        // Get all living heroes
+        var livingHeroes = enemies.Where(h => h.IsAlive).ToList();
+        if (livingHeroes.Count == 0) return;
+
+        switch (_turnCycle)
         {
-            Console.WriteLine($"\n🪨 {_name} slowly winds up a massive smash at {target._name}!");
-            double rawDamage = _strength;
-            target.TakeDamage(rawDamage);
+            case 1:
+                // Turn 1: Smash the strongest hero (the Tank)
+                Character heavyTarget = livingHeroes.OrderByDescending(h => h.MaxHealth).First();
+                Console.WriteLine($"\n☠️ {Name} (BOSS) focuses its gaze on {heavyTarget.Name} and delivers a crushing blow!");
+                heavyTarget.TakeDamage(Strength + 15);
+                _turnCycle = 2;
+                break;
+
+            case 2:
+                // Turn 2: Cast defensive barrier (Guard) and recover some HP
+                Console.WriteLine($"\n🛡️ {Name} (BOSS) channels a dark barrier, raising its defense and recovering energy!");
+                Defending = true;
+                RecievedHealing(Lvl * 10); // Heals itself
+                _turnCycle = 3;
+                break;
+
+            case 3:
+                // Turn 3: Ultimate AOE Ground Slam! Hits ALL living heroes at once
+                Console.WriteLine($"\n💥 {Name} (BOSS) slams the ground! Shockwaves rip through your entire party!");
+                foreach (var hero in livingHeroes)
+                {
+                    double partialDamage = Strength - 10; // Slightly weaker than single target, but hits everyone
+                    hero.TakeDamage(partialDamage);
+                }
+                _turnCycle = 1; // Reset cycle
+                break;
         }
     }
 }

@@ -16,13 +16,33 @@ class Orc : Monster
     public override void TakeTurn(List<Character> allies, List<Character> enemies)
     {
         // Golems blindly target whoever has the highest max health (usually the Tank)
-        Character target = enemies.Where(h => h.IsAlive).OrderByDescending(h => h._maxHealth ).FirstOrDefault();
+        Character target = enemies.Where(h => h.IsAlive).OrderByDescending(h => h.Health ).FirstOrDefault();
         
         if (target != null)
         {
-            Console.WriteLine($"\n🪨 {_name} slowly winds up a massive smash at {target._name}!");
-            double rawDamage = _strength;
-            target.TakeDamage(rawDamage);
+            double hpPercent = (double)Health / MaxHealth;
+
+            if (hpPercent < 0.4) // Enraged mode!
+            {
+                Console.WriteLine($"\n😡 {Name} (Orc) is low on health and flies into a bloodthirsty RAGE!");
+                
+                // 30% chance to miss when raging
+                Random rand = new Random();
+                if (rand.NextDouble() < 0.30)
+                {
+                    Console.WriteLine($"{Name} swings wildly and MISSED!");
+                }
+                else
+                {
+                    Console.WriteLine($"{Name} delivers a devastating heavy swing!");
+                    target.TakeDamage(Strength * 1.5); // Double damage
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\n🪓 {Name} (Orc) roars and swings its battleaxe at {target.Name}!");
+                target.TakeDamage(Strength);
+            }
         }
     }
 }
