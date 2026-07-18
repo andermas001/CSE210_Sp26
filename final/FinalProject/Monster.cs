@@ -1,4 +1,4 @@
-abstract class  Monster : Character
+public abstract class  Monster : Character
 {
     protected int _xpReward;
 

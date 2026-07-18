@@ -46,7 +46,7 @@ class Healer : Hero
 
         Character target;
         Character ally; 
-        
+
         if (choice == "1" && CurrentMana >= 20)
         {   
             ally = ChooseAlly(allies);
@@ -67,7 +67,7 @@ class Healer : Hero
         }
         else if (choice == "3" && CurrentMana >= 30)
         {
-            ally = ChooseTarget(enemies);
+            ally = ChooseTarget(allies);
             if (ally == null) return;
             CurrentMana -= 30;
             CurrentStamina -=5;
