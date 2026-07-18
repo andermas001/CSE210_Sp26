@@ -45,6 +45,7 @@ class Healer : Hero
         
         Console.Write("Choose an action: ");
         string choice = Console.ReadLine();
+        Console.WriteLine();
 
         Character target;
         Character ally; 

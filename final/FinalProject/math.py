@@ -1,3 +1,5 @@
+# help preform simple calculations for the program
+
 staminaPct = .00 * 100
 accuracy = 0.95
 

@@ -17,6 +17,7 @@ class BattleEngine
         {
             RunRound();
         }
+        
         ResolveBattleOutcome();
 
         bool playerVictory = _allies.Any(a => a.IsAlive);

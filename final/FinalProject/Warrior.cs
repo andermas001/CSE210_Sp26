@@ -43,6 +43,7 @@ public class Warrior : Hero
         
         Console.Write("Choose an action: ");
         string choice = Console.ReadLine();
+        Console.WriteLine();
 
         if (choice == "3")
         {

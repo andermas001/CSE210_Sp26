@@ -46,16 +46,15 @@ public abstract class Hero : Character
         var livingTargets = Enemies.Where(t => t.IsAlive).ToList();
         if (livingTargets.Count == 0) return null;
 
-        // need apropiate getter for name
         Console.WriteLine("Select a target:");
         for (int i = 0; i < livingTargets.Count; i++)
         {
             Console.WriteLine($"{i + 1}. {livingTargets[i].Name} | HP: {livingTargets[i].Health}/{livingTargets[i].MaxHealth}");
         }
-
         Console.Write("Enter number: ");
         if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= livingTargets.Count)
         {
+            Console.WriteLine();
             return livingTargets[index - 1];
         }
 

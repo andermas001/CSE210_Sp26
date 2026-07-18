@@ -89,7 +89,9 @@ class DungeonManager
       }
       else
       {
-        Console.WriteLine("You have fallen to your enemies...");
+         Console.WriteLine("You have fallen to your enemies...");
+         Console.WriteLine("\nPress Enter to continue");
+         Console.ReadLine();
       }
    }
 

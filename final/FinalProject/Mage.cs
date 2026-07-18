@@ -39,6 +39,7 @@ class Mage : Hero
         
         Console.Write("Choose an action: ");
         string choice = Console.ReadLine();
+        Console.WriteLine();
 
         Character target;
         if (choice == "1" && CurrentMana >= 20 && CurrentStamina >= 5)
