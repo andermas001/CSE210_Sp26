@@ -73,7 +73,7 @@ class Mage : Hero
             RefillStamina(50);
             RefillMana(50);
         }
-
+        Console.WriteLine();
     }
 
 

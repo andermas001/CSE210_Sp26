@@ -80,5 +80,6 @@ public class Warrior : Hero
             RefillStamina(50);
             RefillMana(50);
         }
+        Console.WriteLine();
     }
 }
