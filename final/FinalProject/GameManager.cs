@@ -25,18 +25,32 @@ public class GameManager
         }
     }
 
-    public bool TriggerRoomEncounter(int currentfloor, bool isBossRoom)
+    public bool TriggerRoomEncounter(int currentfloor, bool isBossRoom, Func<string, string> descriptionFormatter)
     {
         // Pass the dynamically calculated level directly to your updated spawner!
         List<Monster> enemies;
+        string rawEncounterText;
         if (isBossRoom) 
         {
-            enemies = MobSpawner.GenerateBossEncounter(currentfloor);
+            var result = MobSpawner.GenerateBossEncounter(currentfloor);
+            enemies = result.enemies;
+            rawEncounterText = result.encounterDescription;
+            
         }
         else
         {
-            enemies = MobSpawner.GenerateEncounter(currentfloor);
+            var result = MobSpawner.GenerateEncounter(currentfloor);
+            enemies = result.enemies;
+            rawEncounterText = result.encounterDescription;
         }
+
+        Console.Clear();
+        Console.WriteLine("======================================================================");
+        Console.WriteLine(descriptionFormatter(rawEncounterText));
+        Console.WriteLine("======================================================================\n");
+        Console.WriteLine("Press Enter to engage...");
+        Console.ReadLine();
+
         // Convert List<Hero> to List<Character> to feed into the BattleEngine
         List<Character> combatAllies = ActiveParty;
         List<Character> combatEnemies = enemies.Cast<Character>().ToList();
@@ -46,6 +60,7 @@ public class GameManager
         return Victory;
     }
 
+    /* room enounter already calculates for boss room. 
     public void TriggerBossEncounter()
     {
         List<Monster> bossFight = MobSpawner.GenerateBossEncounter(CurrentPartyLevel);
@@ -55,7 +70,7 @@ public class GameManager
 
         BattleEngine engine = new BattleEngine();
         engine.StartInteraction(combatAllies, combatEnemies);
-    }
+    } */
 
     public bool IsPartyAlive()
     {
@@ -67,6 +82,8 @@ public class GameManager
         foreach(var hero in _playerParty)
         {
             hero.RecievedHealing(hero.MaxHealth);
+            hero.RefillMana(hero.Mana);
+            hero.RefillStamina(hero.Stamina);
         }
     }
 
@@ -83,7 +100,7 @@ public class GameManager
 
             else
             {
-                Console.WriteLine($"❤️ {hero.Name} [Lvl {hero.Lvl}] | HP: {hero.Health}/{hero.MaxHealth} | Mana: {hero.CurrentMana}/{hero.Mana} | Stamina: {hero.CurrentStamina}/{hero.Stamina}");
+                Console.WriteLine($"❤️ {hero.Name} [Lvl {hero.Lvl}] | HP: {hero.Health}/{hero.MaxHealth} | Mana: {hero.CurrentMana}/{hero.Mana} | Stamina: {hero.CurrentStamina}/{hero.Stamina} | XP: {hero.Xp}/{hero.XpThreshold}");
             }
         }
         Console.WriteLine("==============================================");

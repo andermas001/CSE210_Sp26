@@ -11,10 +11,8 @@ public abstract class  Character
     private double _strength;
     private int _mana;
     private int _currentMana;
-    private  double _attackPower;
     private bool _defending;
     private bool _buffed;
-    private bool _isAlive;
 
     // constructor
     // turn construtor to protected to insure that there are no charated entities. 
@@ -29,6 +27,8 @@ public abstract class  Character
         _health = _maxHealth;
         _mana = mana;
         _currentMana = _mana;
+        _currentStamina = _stamina;
+        _lvl = 1;
     }
 
     // Getters and setters
@@ -40,9 +40,10 @@ public abstract class  Character
     public int Health
     {
         get=> _health;
-        protected set => _health = (value >= 0 && value <= _maxHealth) 
-        ? value 
-        : throw new ArgumentOutOfRangeException("Health must be higher then 0 and lower then the max health");
+        protected set
+        {
+            _health = Math.Clamp(value, 0, _maxHealth);
+        }
     }
     public int MaxHealth
     {
@@ -97,8 +98,7 @@ public abstract class  Character
     }
     public virtual double AttackPower
     {
-       get => _attackPower;
-       protected set => _attackPower = _strength;
+        get => _strength;
     }
     
     public bool Defending
@@ -114,8 +114,13 @@ public abstract class  Character
     }
     public bool IsAlive 
     {
-        get => _isAlive;
-        protected set => _isAlive = _health > 0;
+        get => _health > 0;
+    }
+
+
+    public int XpThreshold
+    {
+        get => (int)Math.Floor(100 * Math.Pow(Lvl, 1.2));
     }
 
     // methods for combat and running system
@@ -124,16 +129,21 @@ public abstract class  Character
 
     public virtual void TakeDamage(double damage)
     {
-        // what code would look like
-        // _health = Math.Clamp(_health - damage, 0, _maxHealth);
-        // Console.WriteLine($"{_name} took damage! HP: {_health/_maxHealth}");
+        int finalDamage = (int)Math.Round(damage);
+        _health = Math.Clamp(_health - finalDamage, 0, _maxHealth);
+        Console.WriteLine($"{_name} took {finalDamage} damage! HP: {Health/MaxHealth}");
+
+        if (_health <= 0)
+        {
+            Console.WriteLine($"💀 {_name} has been defeated!");
+        }
     }
 
     public virtual void RecievedHealing(int amount)
     {
         if (!IsAlive) return;
         _health = Math.Clamp(_health + amount, 0, _maxHealth);
-        Console.WriteLine($"{_name} was healed for {amount} HP! ({_health}/{_maxHealth})");
+        Console.WriteLine($"{_name} was healed for {amount} HP! ({Health}/{MaxHealth})");
     }
 
     // Code to help calculate the probabilty of missing an attack
@@ -145,7 +155,7 @@ public abstract class  Character
 
         // Calculate current stamina percentage (e.g., 20/100 = 0.2)
         double staminaPct;
-        staminaPct = _currentStamina / _stamina;
+        staminaPct = (double)_currentStamina / _stamina;
 
         // Base accuracy is 95%. If stamina drops below 25%, reduce accuracy proportionally
         double accuracy = 0.95;
@@ -186,5 +196,20 @@ public abstract class  Character
     public virtual Character ChooseAlly(List<Character> allies)
     {
         return null;
+    }
+
+    public virtual void RefillStamina(int amount)
+    {
+        if (!IsAlive) return;
+        _currentStamina = Math.Clamp(_currentStamina + amount, 0, _stamina);
+        Console.WriteLine($"{_name} has rested | Stamina:({_currentStamina}/{_stamina})");
+    }
+
+    public virtual void RefillMana(int amount)
+    {
+        if (!IsAlive) return;
+        _currentMana = Math.Clamp(_currentMana + amount, 0, _mana);
+        Console.WriteLine($"{_name} has rested | Mana: ({_currentMana}/{_mana})");
+        
     }
 }

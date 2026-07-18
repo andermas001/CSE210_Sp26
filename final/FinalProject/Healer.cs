@@ -4,7 +4,7 @@ class Healer : Hero
     {
        get => (Mana / 8) + (Lvl * 2);
     }
-    private double _healingPower;
+
     public int HealingPower{
         get => (Mana / 4) + (Lvl * 5);
     }
@@ -24,11 +24,11 @@ class Healer : Hero
         Stamina += 5;
         Speed += 2;
         Mana += 10;
-        // _currentMana =_mana; 
-        // fill mana on level up?
-        // fill health on level up?
-    }
 
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"✨ LEVEL UP! {Name} reached Level {Lvl}! ✨");
+        Console.ResetColor();
+    }
 
     public override void TakeTurn(List<Character> allies, List<Character> enemies)
     {
@@ -40,6 +40,8 @@ class Healer : Hero
         Console.WriteLine("3. Cast attack buff (30 mana): Single target buff"); 
         Console.WriteLine("4. Cast simple attack (5 mana): Small damage attack"); 
         Console.WriteLine("5. Staff Bonk (0 Mana)");
+        Console.WriteLine("6. Rest (Regain stamina and Mana)");
+
         
         Console.Write("Choose an action: ");
         string choice = Console.ReadLine();
@@ -91,11 +93,8 @@ class Healer : Hero
         }
         else
         {
-            
+            RefillStamina(50);
+            RefillMana(50);
         }
-
-        
     }
-
-
 }

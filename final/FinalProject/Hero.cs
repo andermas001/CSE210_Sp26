@@ -1,11 +1,16 @@
 public abstract class Hero : Character
 {
-  private double Xp;
+  private double _xp;
+
+  public double Xp
+  { 
+    get => _xp;
+  }
 
   public Hero(string name, int maxHp, int speed, double defense, int stamina, double strength, int mana) : 
   base(name, maxHp, speed, defense, stamina, strength, mana)
     {
-        Xp = 0;
+        _xp = 0;
         Lvl = 1;
     }
 
@@ -14,10 +19,21 @@ public abstract class Hero : Character
     For a balanced game C could equal 40, then we can adjust the amount of Xp gained per interaction. 
   */
 
-  public double GainXp(double amount)
+  public void GainXp(double amount)
     {
-        Xp += amount;
-        return Xp;
+        if (!IsAlive) 
+        {
+            return;
+        }
+        _xp += amount;
+        Console.WriteLine($"{Name} earned {amount} XP! ({Xp}/{XpThreshold})");
+
+        // Loop in case they gain enough XP to level up multiple times at once
+        while (Xp >= XpThreshold)
+        {
+            _xp -= XpThreshold; // Carry over remaining XP
+            LevelUp();
+        }
     }
 
     public virtual void LevelUp()
@@ -34,7 +50,7 @@ public abstract class Hero : Character
         Console.WriteLine("Select a target:");
         for (int i = 0; i < livingTargets.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {livingTargets[i].Name}");
+            Console.WriteLine($"{i + 1}. {livingTargets[i].Name} | HP: {livingTargets[i].Health}/{livingTargets[i].MaxHealth}");
         }
 
         Console.Write("Enter number: ");

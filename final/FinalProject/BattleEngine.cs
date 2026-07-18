@@ -5,7 +5,6 @@ class BattleEngine
     private List<Character> _allies;
     private List<Character> _enemies;
 
-
     public bool StartInteraction(List<Character> startingaliies, List<Character> startingEnemies)
     {
         _allies = new List<Character>(startingaliies);
@@ -27,8 +26,12 @@ class BattleEngine
     private bool BothSidesHaveSurvivors()
     { // Will run to see if the battle is over 
         bool alliesAlive = _allies.Any(a => a.IsAlive);
-        bool enemiesAlive = _allies.Any(a => a.IsAlive);
-        return alliesAlive && enemiesAlive;
+        bool enemiesAlive = _enemies.Any(a => a.IsAlive);
+        if (alliesAlive && enemiesAlive)
+        {
+            return true;
+        }
+        else return false;
     }
 
     private void RunRound()
@@ -48,6 +51,8 @@ class BattleEngine
             {
                 continue;
             }
+
+            if (!_enemies.Any(e => e.IsAlive) || !_allies.Any(a => a.IsAlive)) break;
 
             if (!BothSidesHaveSurvivors())
             {

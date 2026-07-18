@@ -10,7 +10,7 @@ class Golem : Monster
     level:level
     )
     {
-        _xpReward = 30 + (level * 10);
+        _xpReward = 40 + (level * 10);
     }
 
     public override void TakeTurn(List<Character> allies, List<Character> enemies)

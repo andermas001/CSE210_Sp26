@@ -17,7 +17,7 @@ public static class MobSpawner
         return namePool[index];
     }
 
-    public static List<Monster> GenerateEncounter(int floorLvl)
+    public static (List<Monster> enemies, string encounterDescription) GenerateEncounter(int floorLvl)
     {
         List<Monster> encounterList = new List<Monster>();
 
@@ -25,37 +25,58 @@ public static class MobSpawner
 
         int minLvl = Math.Max(1, floorLvl - 3);
         int maxLvl = floorLvl +1;
+        string description = "";
 
         switch (encounterType)
         {
             case 0:
-                encounterList.Add(new Orc($"{GetRandName(_orcNames)} (Orc)", _rand.Next(minLvl, maxLvl)));
-                encounterList.Add(new Goblin($"{GetRandName(_goblinNames)} (goblin)", _rand.Next(minLvl, maxLvl)));
-                encounterList.Add(new Goblin($"{GetRandName(_goblinNames)} (goblin)", _rand.Next(minLvl, maxLvl)));
+                var orc = new Orc($"{GetRandName(_orcNames)} (Orc)", _rand.Next(minLvl, maxLvl));
+                var gob1 = new Goblin($"{GetRandName(_goblinNames)} (goblin)", _rand.Next(minLvl, maxLvl));
+                var gob2 = new Goblin($"{GetRandName(_goblinNames)} (goblin)", _rand.Next(minLvl, maxLvl));
+
+                encounterList.Add(orc);
+                encounterList.Add(gob1);
+                encounterList.Add(gob2);
+
+                description = $"an aggressive raiding party led by {orc.Name}";
                 break;
 
             case 1:
                 int packSize = _rand.Next(2, 5);
+                string alphaName = "";
+                int currentAlphaLvl = 0;
                 for(int i = 0;  i < packSize; i++)
                 {
-                    encounterList.Add(new Wolf($"{GetRandName(_wolfNames)}, (Wolf)", _rand.Next(minLvl, maxLvl)));
+                    var wolf = new Wolf($"{GetRandName(_wolfNames)}, (Wolf)", _rand.Next(minLvl, maxLvl));
+                    if (wolf.Lvl > currentAlphaLvl)
+                    {
+                        alphaName = wolf.Name;
+                        currentAlphaLvl = wolf.Lvl;
+                    }
+                    encounterList.Add(wolf);
                 }
+                description = $"a feral pack of {packSize} wolves trailed by the Alpha {alphaName}";
                 break;
 
             case 2:
-                encounterList.Add(new Golem($"{GetRandName(_golemNames)} (golem)", _rand.Next(minLvl, maxLvl)));
+                var golem = new Golem($"{GetRandName(_golemNames)} (golem)", _rand.Next(minLvl, maxLvl));
+                encounterList.Add(golem);
                 if (_rand.NextDouble() > 0.5)
-                    encounterList.Add(new Goblin($"{GetRandName(_goblinNames)} (goblin)", minLvl));
+                {
+                    var goblin = new Goblin($"{GetRandName(_goblinNames)} (goblin)", minLvl);
+                    encounterList.Add(goblin);
+                }
                 break;             
         }
-
-        return encounterList;
+        return (encounterList, description);
     }
 
 
-    public static List<Monster> GenerateBossEncounter(int floorLvl)
+    public static (List<Monster> enemies, string encounterDescription) GenerateBossEncounter(int floorLvl)
     {
-        return new List<Monster> { new Boss($"{GetRandName(_bossNames)}",  floorLvl +2)};
+        int bossLvl = floorLvl + _rand.Next(1, 3);
+        var boss = new Boss(GetRandName(_bossNames), bossLvl);
+        return (new List<Monster> { boss }, $"⚠️ THE DUNGEON OVERLORD: {boss.Name} ⚠️");
     }
 
 }
