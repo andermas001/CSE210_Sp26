@@ -6,7 +6,7 @@ class BattleEngine
     private List<Character> _enemies;
 
 
-    public void StartInteraction(List<Character> startingaliies, List<Character> startingEnemies)
+    public bool StartInteraction(List<Character> startingaliies, List<Character> startingEnemies)
     {
         _allies = new List<Character>(startingaliies);
         _enemies = new List<Character>(startingEnemies);
@@ -19,11 +19,10 @@ class BattleEngine
             RunRound();
         }
         ResolveBattleOutcome();
+
+        bool playerVictory = _allies.Any(a => a.IsAlive);
+        return playerVictory;
     }
-    // public void RollInitiative()
-    // { //Will run code to decide the order of attakcing in the battle
-        
-    // }
 
     private bool BothSidesHaveSurvivors()
     { // Will run to see if the battle is over 

@@ -17,14 +17,14 @@ public static class MobSpawner
         return namePool[index];
     }
 
-    public static List<Monster> GenerateEncounter(int partyLevel)
+    public static List<Monster> GenerateEncounter(int floorLvl)
     {
         List<Monster> encounterList = new List<Monster>();
 
         int encounterType = _rand.Next(3);
 
-        int minLvl = Math.Max(1, partyLevel - 3);
-        int maxLvl = partyLevel +1;
+        int minLvl = Math.Max(1, floorLvl - 3);
+        int maxLvl = floorLvl +1;
 
         switch (encounterType)
         {
@@ -52,8 +52,10 @@ public static class MobSpawner
         return encounterList;
     }
 
-    public static List<Monster> GenerateBossEncounter(int PartyLvl)
+
+    public static List<Monster> GenerateBossEncounter(int floorLvl)
     {
-        return new List<Monster> { new Boss($"{GetRandName(_bossNames)}",  PartyLvl +2)};
+        return new List<Monster> { new Boss($"{GetRandName(_bossNames)}",  floorLvl +2)};
     }
+
 }
