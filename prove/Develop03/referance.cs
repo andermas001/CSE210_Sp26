@@ -1,27 +1,51 @@
 class Reference
 {
-    private string _referance;
-    private string _scripture;
+    private string _bookName;
+    private int _chapter;
+    private int _verse;
+    private int _endVerse;
 
-    public Reference(string referance, string scripture)
+    public Reference(string name, int chapter, int verse)
     {
-        _referance = referance;
-        _scripture = scripture;
+        _bookName = name;
+        _chapter = chapter;
+        _verse  = verse;
+        _endVerse = verse;
     }
 
-    public Reference()
+    public Reference(string name, int chapter, int startverse, int endVerse)
     {
-        _referance = "";
-        _scripture = "";
+        _bookName = name;
+        _chapter = chapter;
+        _verse = startverse;
+        _endVerse  = endVerse;
     }
 
-    public void SetReference(string referance)
+    public void ShowReference()
     {
-        _referance = referance;
+        if (_verse == _endVerse)
+            {
+                Console.WriteLine($"{_bookName} {_chapter}:{_verse}");
+            }
+        Console.WriteLine($"{_bookName} {_chapter}:{_verse}-{_endVerse}");
+    }
+    
+
+    public string GetScriptureReference()
+    {
+        if (_verse == _endVerse)
+            {
+                return $"{_bookName} {_chapter}:{_verse}";
+            }
+            return $"{_bookName} {_chapter}:{_verse}-{_endVerse}";
     }
 
-    public void SetScripture(string scripture)
+    private string GetScriptureReferenceString()
     {
-        _scripture = scripture;
+        if (_verse == _endVerse)
+            {
+                return $"{_bookName} {_chapter}:{_verse}";
+            }
+            return $"{_bookName} {_chapter}:{_verse}-{_endVerse}";
     }
 }

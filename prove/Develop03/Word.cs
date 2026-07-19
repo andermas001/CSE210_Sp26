@@ -1,16 +1,34 @@
 class Word
 {
-    private string _text;
-
-    public Word(string text)
+    private string _word;
+    private bool _hidden;
+    public Word(string word)
     {
-        _text = text;
+        _word = word;
+        _hidden = false;
     }
 
-    public string getText() => _text;
+    public bool IsHidden()
+    {
+        return _hidden;
+    }
+
+    public void Hide()
+    {
+        _hidden =  true;
+    }
+
+    public string GetText()
+    {
+        if (_hidden == true)
+        {
+            return new string ('_', _word.Length);
+        }
+        return _word;
+    }
 
     public string GetHidden()
     {
-        return new string('_', _text.Length);
+        return new string('_', _word.Length);
     }
 }
