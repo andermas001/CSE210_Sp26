@@ -3,6 +3,7 @@ class DungeonManager
    private GameManager _game;
    private int _currentFloor = 1;
    private int _roomsCleared = 0;
+   private int _maxRoomsPerFloor;
    private static Random _rand = new Random();
 
    private static readonly string[] _roomDescriptions = 
@@ -54,7 +55,8 @@ class DungeonManager
          switch (choice)
          {
             case "1":
-               AdvanceToNextRoom();
+               _maxRoomsPerFloor = _rand.Next(4, 7); // Randomly determine the number of rooms for this floor (between 4 and 6)
+               AdvanceToNextRoom(_maxRoomsPerFloor);
                break;
             
             case "2":
@@ -68,10 +70,10 @@ class DungeonManager
       }
    }
 
-   private void AdvanceToNextRoom()
+   private void AdvanceToNextRoom(int maxRoomsPerFloor = 5)
    {
       _roomsCleared ++ ;
-      bool isBossRoom = (_roomsCleared % 5 ==0);
+      bool isBossRoom = (_roomsCleared % maxRoomsPerFloor ==0);
 
       bool victory = _game.TriggerRoomEncounter(_currentFloor, isBossRoom, text => GetRandomRoomDescription(text));
 

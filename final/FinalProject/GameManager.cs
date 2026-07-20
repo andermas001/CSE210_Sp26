@@ -7,7 +7,8 @@ public class GameManager
     public GameManager()
     {
         // Initialize your starting party
-        _playerParty = new List<Hero> {
+        _playerParty = new List<Hero> 
+        {
             new Warrior("Valen"),
             new Mage("Lyra"),
             new Tank("Brog")

@@ -15,7 +15,7 @@ public abstract class  Character
     private bool _buffed;
 
     // constructor
-    // turn construtor to protected to insure that there are no charated entities. 
+    // turn construtor to protected to insure that there are no character entities. 
     protected Character(string name, int maxHp, double speed, double defense, int stamina, double strength, int mana)
     {
         _name = name;
@@ -69,15 +69,16 @@ public abstract class  Character
     }
     public int Stamina{
         get => _stamina;
-        protected set => _stamina = (value > -1) 
-        ? value 
-        : throw new ArgumentOutOfRangeException("stamina cannot be lower then 0");
+        protected set { _stamina = value;
+        }
     }
-    public int CurrentStamina{
+    public int CurrentStamina
+    {
         get => _currentStamina;
-        protected set => _currentStamina = (value > -1 && value <= _stamina) 
-        ? value 
-        : throw new ArgumentOutOfRangeException("stamina cannot be lower then 0 or higher then the max stamina");
+        protected set 
+        {
+            _stamina = Math.Clamp(value, 0, _stamina);
+        }
     }
     public double Strength
     {
