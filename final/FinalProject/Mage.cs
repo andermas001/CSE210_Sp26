@@ -12,6 +12,21 @@ class Mage : Hero
     {
     }
 
+    public bool CastManaShield()
+    {
+        int manaCost = 25;
+
+        if (CurrentMana < manaCost)
+        {
+            Console.WriteLine($"❌ {Name} doesn't have enough Mana! (Requires {manaCost} Mana)");
+            return false;
+        }
+
+        CurrentMana -= manaCost;
+        ApplyShield(50 + (Lvl * 5));
+        return true;
+    }
+
     public override void LevelUp()
     {
         Lvl ++;
@@ -30,15 +45,17 @@ class Mage : Hero
     public override void TakeTurn(List<Character> allies, List<Character> enemies)
     {
         Defending = false;
+        UpdateStatusEfffects();
         Console.WriteLine($"\n--- {Name}'s Turn (Mage) ---");
         Console.WriteLine($"HP: {Health}/{MaxHealth} | Mana: {CurrentMana}/{Mana}");
         Console.WriteLine("1. Cast Fireball (20 Mana): single target attack");  // single target attack (high damage)
         Console.WriteLine("2. Cast Schorching Wave (30 Mana): Area of effect attack");  // multi target attack(area damage)
-        Console.WriteLine("3. Staff Bonk (0 Mana)");
-        Console.WriteLine("4. Rest (Regain stamina and Mana)");
-        
+        Console.WriteLine("3. Cast Mana Shiels (25 Mana): Defense");  // multi target attack(area damage)
+        Console.WriteLine("4. Staff Bonk (0 Mana)");
+        Console.WriteLine("5. Rest (Regain stamina and Mana)");
         Console.Write("Choose an action: ");
         string choice = Console.ReadLine();
+
         Console.WriteLine();
 
         Character target;
@@ -63,7 +80,11 @@ class Mage : Hero
                 i.TakeDamage(AttackPower/3);
             }
         }
-        else if (choice == "3" && CurrentStamina > 10)
+        else if (choice == "3" && CurrentMana > 25)
+        {
+            CastManaShield();
+        }
+        else if (choice == "4" && CurrentStamina > 10)
         {
             target = ChooseTarget(enemies);
             CurrentStamina -= 10;

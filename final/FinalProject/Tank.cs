@@ -30,6 +30,7 @@ class Tank : Hero
     public override void TakeTurn(List<Character> allies, List<Character> enemies)
     {
         Defending = false; // Reset defense stance at start of turn
+        UpdateStatusEfffects();
         Console.WriteLine($"\n--- {Name}'s Turn (Tank) ---");
         Console.WriteLine($"HP: {Health}/{MaxHealth} | Stamina: {CurrentStamina}/{Stamina}");
         Console.WriteLine("1. Light Attack (0 Stamina, standard damage)");

@@ -16,6 +16,50 @@ class Healer : Hero
         
     }
 
+    public bool CastManaShield(Character target)
+    {
+        int manaCost = 30;
+
+        if (CurrentMana < manaCost)
+        {
+            Console.WriteLine($"❌ {Name} doesn't have enough Mana! (Requires {manaCost} Mana)");
+            return false;
+        }
+
+        if (target == null || !target.IsAlive)
+        {
+            Console.WriteLine($"❌ Invalid target for Mana Shield.");
+            return false;
+        }
+
+        CurrentMana -= 30;
+        Console.WriteLine($"✨ {Name} casts Mana Shield on {target.Name}!");
+        target.ApplyShield(50 + (Lvl * 5)); // Applies 50 HP shield to chosen target and scales per level +5 per lvl
+        return true;
+    }
+
+    public bool CastStrengthen(Character target, double bonusDamage, int duration = 3)
+    {
+        int manaCost = 30;
+
+        if (CurrentMana < manaCost)
+        {
+            Console.WriteLine($"❌ {Name} doesn't have enough Mana! (Requires {manaCost} Mana)");
+            return false;
+        }
+
+        if (target == null || !target.IsAlive)
+        {
+            Console.WriteLine($"❌ Invalid target for strengthen.");
+            return false;
+        }
+        CurrentMana -= manaCost;
+        Console.WriteLine($"✨ {Name} casts Empower on {target.Name}!");
+
+        target.RecievedBuff(bonusDamage, duration);
+        return true;
+    }
+
     public override void LevelUp()
     {
         Lvl ++;
@@ -33,14 +77,16 @@ class Healer : Hero
     public override void TakeTurn(List<Character> allies, List<Character> enemies)
     {
         Defending = false;
+        UpdateStatusEfffects();
         Console.WriteLine($"\n--- {Name}'s Turn (Healer) ---");
         Console.WriteLine($"HP: {Health}/{MaxHealth} | Mana: {CurrentMana}/{Mana}");
         Console.WriteLine("1. Cast Heal (20 Mana): single target heal"); // single target heal (high amount)
         Console.WriteLine("2. Cast area heal (25 Mana): Area heal");    // multi target attack(area heal)
         Console.WriteLine("3. Cast attack buff (30 mana): Single target buff"); 
         Console.WriteLine("4. Cast simple attack (5 mana): Small damage attack"); 
-        Console.WriteLine("5. Staff Bonk (0 Mana)");
-        Console.WriteLine("6. Rest (Regain stamina and Mana)");
+        Console.WriteLine("5. Cast mana shield (30 mana): negates damage"); 
+        Console.WriteLine("6. Staff Bonk (0 Mana)");
+        Console.WriteLine("7. Rest (Regain stamina and Mana)");
 
         
         Console.Write("Choose an action: ");
@@ -72,10 +118,8 @@ class Healer : Hero
         {
             ally = ChooseTarget(allies);
             if (ally == null) return;
-            CurrentMana -= 30;
-            CurrentStamina -=5;
-            ally.RecievedBuff(HealingPower);
-            
+
+            CastStrengthen(ally, HealingPower, 3);
         }
         else if (choice == "4" && CurrentMana >= 5)
         {
@@ -85,7 +129,13 @@ class Healer : Hero
             CurrentStamina -=5;
             target.TakeDamage(AttackPower);
         }
-        else if (choice == "5" )
+        else if (choice == "5" && CurrentMana >= 30)
+        {
+            ally = ChooseTarget(allies);
+            if (ally == null) return;
+            CastManaShield(ally);
+        }
+        else if (choice == "6" )
         {
             target = ChooseTarget(enemies);
             if (target == null) return;

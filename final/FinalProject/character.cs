@@ -12,7 +12,14 @@ public abstract class  Character
     private int _mana;
     private int _currentMana;
     private bool _defending;
+    private int _buffedTurnsRemaining;
     private bool _buffed;
+    private double _bonusAttackPower;
+    private double _shield;
+
+    private List<Item> _inventory = new List<Item>();
+    private Equipment _equippedWeapon;
+    private Equipment _equippedArmor;
 
     // constructor
     // turn construtor to protected to insure that there are no character entities. 
@@ -64,7 +71,7 @@ public abstract class  Character
     }
     public double Defense
     {
-        get => _defense;
+        get => _defense + (_equippedArmor?.BonusDefense ?? 0);
         protected set => _defense = value;
     }
     public int Stamina{
@@ -77,7 +84,7 @@ public abstract class  Character
         get => _currentStamina;
         protected set 
         {
-            _stamina = Math.Clamp(value, 0, _stamina);
+            _currentStamina = Math.Clamp(value, 0, _stamina);
         }
     }
     public double Strength
@@ -97,9 +104,12 @@ public abstract class  Character
         ? value 
         : throw new ArgumentOutOfRangeException("mana cannot be lower then 0 or higher then the max mana");
     }
+    public List<Item> Inventory => _inventory;
+    public Equipment EquippedWeapon => _equippedWeapon;
+    public Equipment EquippedArmor => _equippedArmor;
     public virtual double AttackPower
     {
-        get => _strength;
+        get => _strength + BonusAttackPower + (_equippedWeapon?.BonusStrength ?? 0);
     }
     
     public bool Defending
@@ -108,16 +118,29 @@ public abstract class  Character
         protected set => _defending = value;
     }
     
+    public int BuffedTurnsRemaining => _buffedTurnsRemaining;
+
+    public double BonusAttackPower => _bonusAttackPower;
+
     public bool Buffed
     {
         get => _buffed;
-        protected set => _buffed = value;
-    }
+        protected set => _buffed = value; 
+    } 
+    
     public bool IsAlive 
     {
         get => _health > 0;
     }
 
+    public double Shield
+    {
+        get => _shield;
+        protected set 
+        {
+            _shield = Math.Clamp(value, 0, value);
+        }
+    }
 
     public int XpThreshold
     {
@@ -130,11 +153,28 @@ public abstract class  Character
 
     public virtual void TakeDamage(double damage)
     {
-        int finalDamage = (int)Math.Round(damage);
-        _health = Math.Clamp(_health - finalDamage, 0, _maxHealth);
-        Console.WriteLine($"{_name} took {finalDamage} damage! HP: {Health/MaxHealth}");
+        double finalDamage = damage;
+        if (Shield > 0)
+        {
+            if (finalDamage <= Shield)
+            {
+                Shield =- finalDamage;
+                Console.WriteLine($"🛡️ {Name}'s shield absorbed ALL {finalDamage} damage! (Shield left: {Shield})");
+                return;
+            }
 
-        if (_health <= 0)
+            else
+            {
+                double absorbed = Shield;
+                finalDamage -= Shield;
+                Shield = 0;
+                Console.WriteLine($"🛡️ {Name}'s shield broke after absorbing {absorbed} damage!");
+            }
+        }
+        Health = (int )(Math.Clamp(_health - finalDamage, 0, _maxHealth));
+        Console.WriteLine($"{_name} took {finalDamage} damage! HP: {Health}/{MaxHealth}");
+
+        if (!IsAlive)
         {
             Console.WriteLine($"💀 {_name} has been defeated!");
         }
@@ -174,19 +214,24 @@ public abstract class  Character
         return false;
     }
 
-    public virtual void RecievedBuff(int amount)
+    public virtual void RecievedBuff(double bonusDamage, int durationTurns)
     {
         if (!IsAlive) return;
-        _strength = _strength + amount;
-        Console.WriteLine($"{_name} was buffed for {amount} damage! ");
-        _buffed = true;
+
+        _bonusAttackPower = bonusDamage;
+        _buffedTurnsRemaining = durationTurns;
+        Console.WriteLine($"🔥 {Name} received a +{bonusDamage} Attack Power buff for {durationTurns} turns!");
+        Buffed = true;
     }
 
-    protected virtual bool IsDefending()
+    protected virtual void IsDefending()
     {
-        return _defending = true;
+        _defending = true;
+        while (_defending == true)
+        {
+            Defense = Defense * 3;
+        }
     }
-
 
     // choose ally and choose taget will allow for the user to chose a target to attack or choose a ally to help or heal
     public virtual Character ChooseTarget(List<Character> Enemies)
@@ -212,5 +257,45 @@ public abstract class  Character
         _currentMana = Math.Clamp(_currentMana + amount, 0, _mana);
         Console.WriteLine($"{_name} has rested | Mana: ({_currentMana}/{_mana})");
         
+    }
+
+    public virtual void ApplyShield(double amount)
+    {
+        if (!IsAlive) return;
+        Shield += amount;
+        Console.WriteLine($"🛡️ {Name} gained a {amount} HP shield! (Total Shield: {Shield})");
+    }
+
+    public virtual void UpdateStatusEfffects()
+    {
+        if (_buffedTurnsRemaining > 0)
+        {
+            _buffedTurnsRemaining --;
+
+            if (_buffedTurnsRemaining == 0)
+            {
+                _bonusAttackPower = 0;
+                Buffed = false;
+                Console.WriteLine($"⌛ {Name}'s Attack Power buff has expired.");
+            }
+            else
+            {
+                Console.WriteLine($"🔥 {Name}'s buff is active (+{_bonusAttackPower} ATK, {_buffedTurnsRemaining} turns left).");
+            }
+        }
+    }
+
+    public void EquipItem(Equipment equip)
+    {
+        if (equip.Type == ItemType.Weapon)
+        {
+            _equippedWeapon = equip;
+            Console.WriteLine($"⚔️ {Name} equipped {equip.Name}! (+{equip.BonusStrength} ATK)");
+        }
+        else if (equip.Type == ItemType.Armor)
+        {
+            _equippedArmor = equip;
+            Console.WriteLine($"🛡️ {Name} equipped {equip.Name}! (+{equip.BonusDefense} DEF)");
+        }
     }
 }
